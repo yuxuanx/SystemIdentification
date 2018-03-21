@@ -15,7 +15,7 @@ if nargin==3 % only one model
     m = varargin{3};
     modelType = m.model;
     
-    model_hat = modelSelection(modelType,x,y);
+    model_hat = modelSelection(modelType,x,y,m);
     
     % prediction
     predictions = evalModel(model_hat,x);
@@ -77,7 +77,7 @@ else % multiple models
             % extract model, one by one
             m = varargin{i+2};
             modelType = m.model;
-            model_hat = modelSelection(modelType,x,y);
+            model_hat = modelSelection(modelType,x,y,m);
             % prediction
             predictions(:,i) = evalModel(model_hat,x);
             plot(predictions(:,i),'LineWidth',2)
@@ -94,14 +94,14 @@ switch(modelType)
     case 'LR'   % linear regression
         model = LinRegress(x,y);
     case 'LRR'  % linear regression with regularization
-        lambda = 1; % regularization factor
+        lambda = m.lambda; % regularization factor
         model = LinRegressRegul(x,y,lambda);
     case 'PRR'  % (multidimensional) polynomial linear regression
-        lambda = 1;
-        n = 2;  % polynomial order
+        lambda = m.lambda;
+        n = m.n;  % polynomial order
         model = ployfit(x,y,lambda,n);
     case 'KNN' % KNN regression
-        k = 5;
+        k = m.n;
         model = knnRegressor(x,y,k);
 end
 end

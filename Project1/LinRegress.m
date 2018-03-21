@@ -22,6 +22,8 @@ if numSamples == size(y,1)
         estimateSquareErrorSum = estimateError'*estimateError;
         m.variance = inv(xSquare)/(numSamples-size(x,2))*estimateSquareErrorSum;
     end
+    m.x = x;
+    m.y = y;
 elseif numSamples ~= size(y,1)
     error('Matrix x and y should have the same number of rows!')
 elseif numSamples < size(x,2)

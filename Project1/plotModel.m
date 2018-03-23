@@ -61,6 +61,7 @@ if nargin==3 % only one model
         figure; hold on
         plot(y,'LineWidth',2); plot(predictions,'LineWidth',2)
         plot(f_max,'--','LineWidth',2); plot(f_min,'--','LineWidth',2);
+        patch([1:length(f_max) fliplr(1:length(f_max))], [f_max' fliplr(f_min')], 'y','FaceAlpha',.1)
         legend('Generated data (Truth)','Predictions','Approximate upper bound',...
             'Approximate lower bound')
     end
@@ -89,7 +90,7 @@ end
 
 end
 
-function model = modelSelection(modelType,x,y)
+function model = modelSelection(modelType,x,y,m)
 switch(modelType)
     case 'LR'   % linear regression
         model = LinRegress(x,y);

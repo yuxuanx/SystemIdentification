@@ -1,13 +1,14 @@
 clear;clc
 %% Validate problem 1.a
 numSamples = 20;
-numVariables = 1;
+numVariables = 3;
 dimension = 1;
 x = 10*rand(numSamples,numVariables);
 theta = rand(numVariables,dimension);
 
 % add some noise
-noise = rand(numSamples,dimension);
+stdNoise = 1;
+noise = stdNoise*rand(numSamples,dimension);
 y = x*theta + noise; 
 
 % Validation estimate and its standard deviation
@@ -15,9 +16,15 @@ m = LinRegress(x,y);
 thetaEstimate = m.theta;
 
 if dimension == 1
-    standardDeviation = sqrtm(inv(x'*x)*var(noise));
+    standardDeviation = sqrtm(inv(x'*x))*stdNoise;
     standardDeviationEstimate = sqrtm(m.variance);
 end
+
+% plot a linear regression model with uncertainty region
+plotModel(y,x,m);
+% plot a linear regression and a KNN model
+m2 = knnRegressor(x,y,3);
+plotModel(y,x,m,m2);
 
 %% Validate problem 1.d
 % quadratic function
@@ -40,7 +47,8 @@ end
 theta = rand(size(x2,2),dimension);
 
 % add some noise
-noise = 0.1*rand(numSamples,dimension);
+stdNoise = 0.1;
+noise = stdNoise*rand(numSamples,dimension);
 y = x2*theta + noise;
 
 m = ployfit(x,y,lambda,n);

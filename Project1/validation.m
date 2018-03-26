@@ -1,6 +1,6 @@
 clear;clc
 %% Validate problem 1.a
-numSamples = 20;
+numSamples = 30;
 numVariables = 3;
 dimension = 1;
 x = 10*rand(numSamples,numVariables);

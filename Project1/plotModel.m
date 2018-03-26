@@ -73,7 +73,7 @@ else % multiple models
         figure; hold on
         plot(y,'LineWidth',2);
         Legend = cell(numModel+1,1);
-        Legend{1} = 'Generated data (truth)';
+        Legend{1} = 'Generated data (Truth)';
         for i = 1:numModel
             % extract model, one by one
             m = varargin{i+2};

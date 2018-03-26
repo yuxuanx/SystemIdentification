@@ -55,7 +55,7 @@ averagevariance = zeros(2,2,numTrial);
 for i = 1:numTrial
     % maybe add a time seed here
     [x,y] =linearData(N,var);
-    m = ployfit(x,y,0,1);
+    m = LinRegressRegul(x,y,lambda);
     parameterEstimates(:,i) = m.theta;
     averagevariance(:,:,i) = m.variance;
 end
@@ -64,10 +64,10 @@ averagevariance = mean(averagevariance,3);
 figure
 subplot(2,1,1)
 histogram(parameterEstimates(1,:))
-xlabel('Parameter estimate (constant)'); ylabel('Frequency')
+xlabel('Parameter estimate'); ylabel('Frequency')
 subplot(2,1,2)
 histogram(parameterEstimates(2,:))
-xlabel('Parameter estimate (linear term)'); ylabel('Frequency')
+xlabel('Parameter estimate'); ylabel('Frequency')
 
 % Question:, the parameter variance is related to x, if x changes every MC
 % trial, hwo to validate? keep the x the same in every trial??
@@ -81,9 +81,9 @@ mseKNN_nk = zeros(length(n),length(N));
 mseKNN_vark = zeros(length(n),length(var));
 
 var = 1;
-for i = 1:length(N)
-    [x_noise,y_noise] =linearData(N(i),var);
-    for k = 1:length(n)
+for k = 1:length(n)
+    for i = 1:length(N)
+        [x_noise,y_noise] =linearData(N(i),var);
         m = knnRegressor(x_noise,y_noise,n(k));
         predictions = evalModel(m,x);
         mseKNN_nk(k,i) = immse(y,predictions);
@@ -96,9 +96,9 @@ ylabel('number of neighbors'); xlabel('number of samples'); zlabel('mse')
 
 N = 1000;
 var = 0.5:0.5:2;
-for i = 1:length(var)
-    [x_noise,y_noise] =linearData(N,var(i));
-    for k = 1:length(n)
+for k = 1:length(n)
+    for i = 1:length(var)
+        [x_noise,y_noise] =linearData(N,var(i));
         m = knnRegressor(x_noise,y_noise,n(k));
         predictions = evalModel(m,x);
         mseKNN_vark(k,i) = immse(y,predictions);
@@ -110,8 +110,8 @@ mesh(0.5:0.5:2,2:10,mseKNN_vark)
 ylabel('number of neighbors'); xlabel('noise variance'); zlabel('mse')
 
 %% generate polynomial data
-N = 100; % sample size, try 10,100,1000,10000
-[x,y] = polyData(10*N,0);
+N = 1000; % sample size, try 10,100,1000,10000
+[x,y] = polyData(N,0);
 var = 1;
 [x_noise,y_noise] = polyData(N,var);
 % linear regression
@@ -131,18 +131,14 @@ for i = 1:length(n)
     msePoly(i) = immse(y,estimatePoly);
 end
 
-figure
-plot(n,msePoly,'Linewidth',2)
-xlabel('Model degree'); ylabel('Mean square error')
-
 % try degree 10 on data size 15, and different regularization
 % if no regularization, overfitting
 N = 15;
 n = 10;
-var = 1;
-[x,y] = polyData(10*N,0);
+var = 0.1;
+[x,y] = polyData(N,0);
 [x_noise,y_noise] = polyData(N,var);
-lambda = [0.01,0.1,1,10,100];
+lambda = [0,0.01,0.1,1,10,100];
 
 msePoly = zeros(length(lambda),1);
 for i = 1:length(lambda)
@@ -151,9 +147,6 @@ for i = 1:length(lambda)
     estimatePoly = m_x.x*m.theta;
     msePoly(i) = immse(y,estimatePoly);
 end
-figure
-semilogx(lambda,msePoly,'Linewidth',2)
-xlabel('Regularization term'); ylabel('Mean square error')
 
 %% unsymmetrical data
 N = 100; % sample size, try 10,100,1000,10000
@@ -167,9 +160,7 @@ estimateLinear = m_x.x*m.theta;
 mseLinear = immse(y,estimateLinear);
 
 figure; hold on
-plot(y,'Linewidth',2); plot(estimateLinear,'Linewidth',2);
-ylabel('Estimation')
-legend('Generated data (Truth)','LR estimation')
+plot(y); plot(estimateLinear);
 
 % Finding: linear model can not give a good estimate to the second half of
 % the unsymmetric data due to the nonlinearity of the model
@@ -184,9 +175,9 @@ mseKNN_nk = zeros(length(n),length(N));
 mseKNN_vark = zeros(length(n),length(var));
 
 var = 1;
-for i = 1:length(N)
-    [x_noise,y_noise] =polyData(N(i),var,1);
-    for k = 1:length(n)
+for k = 1:length(n)
+    for i = 1:length(N)
+        [x_noise,y_noise] =polyData(N(i),var,1);
         m = knnRegressor(x_noise,y_noise,n(k));
         predictions = evalModel(m,x);
         mseKNN_nk(k,i) = immse(y,predictions);
@@ -199,9 +190,9 @@ ylabel('number of neighbors'); xlabel('number of samples'); zlabel('mse')
 
 N = 1000;
 var = 0.5:0.5:2;
-for i = 1:length(var)
-    [x_noise,y_noise] =polyData(N,var(i),1);
-    for k = 1:length(n)
+for k = 1:length(n)
+    for i = 1:length(var)
+        [x_noise,y_noise] =polyData(N,var(i),1);
         m = knnRegressor(x_noise,y_noise,n(k));
         predictions = evalModel(m,x);
         mseKNN_vark(k,i) = immse(y,predictions);
@@ -213,16 +204,16 @@ mesh(0.5:0.5:2,2:10,mseKNN_vark)
 ylabel('number of neighbors'); xlabel('noise variance'); zlabel('mse')
 
 %% generate chirp data
-N = 1000; % sample size, try 50,1000
-var = 0.2; % noise level, try 0.05, 0.2
-[x,y] = chirpData(10*N,0);
+N = 50; % sample size, try 50,1000
+var = 0.05; % noise level, try 0.05, 0.2
+[x,y] = chirpData(N,0);
 [x_noise,y_noise] = chirpData(N,var);
 % polynomial regression (try different degrees)
-n = 2:10;
+n = 1:10;
 msePoly = zeros(length(n),1);
 for i = 1:length(n)
-    m_x = ployfit(x,y,10,n(i));
-    m = ployfit(x_noise,y_noise,10,n(i));
+    m_x = ployfit(x,y,0,n(i));
+    m = ployfit(x_noise,y_noise,0,n(i));
     estimatePoly = m_x.x*m.theta;
     msePoly(i) = immse(y,estimatePoly);
 end
@@ -242,17 +233,16 @@ end
 % subplot for var = 0.05, 0.2, N = 50, 1000, k = 2:10
 n = 2:10;
 N = 1000;
-var = 0.05;
+var = 0.2;
 mseKNN = zeros(length(n),1);
 for k = 1:length(n)
-%     [x_noise,y_noise] =polyData(N,var,1);
+    [x_noise,y_noise] =polyData(N,var,1);
     m = knnRegressor(x_noise,y_noise,n(k));
     predictions = evalModel(m,x);
     mseKNN(k) = immse(y,predictions);
 end
-figure; hold on
+figure
 plot(2:10,mseKNN)
-plot(2:10,msePoly)
 
 %% Estimating two dimensional functions
 % [xq,yq] = meshgrid(0:.2:10, 0:.2:10);
@@ -265,10 +255,11 @@ plot(2:10,msePoly)
 % changes, the test, validation data remains the same
 
 % try both twoDimData1&2
-N = 10;
+N = 1000;
+[x,y] = twoDimData2(N,0);
+N = 100;
 [x_noise,y_noise] = twoDimData2(N,1);
-[x,y] = twoDimData2(10*N,0);
-n = 2;
+n = 5;
 m_x = ployfit(x,y,0,n); % try 2 to 5
 m = ployfit(x_noise,y_noise,0,n);
 estimatePoly = m_x.x*m.theta;
@@ -276,24 +267,21 @@ msePoly = immse(y,estimatePoly);
 
 figure
 [xq,yq] = meshgrid(0:.2:10, 0:.2:10);
-vq = griddata(x(:,1),x(:,2),y,xq,yq);
-% ve = griddata(x(:,1),x(:,2),estimatePoly,xq,yq);
-mesh(xq,yq,vq);
+% vq = griddata(x(:,1),x(:,2),y,xq,yq);
+ve = griddata(x(:,1),x(:,2),estimatePoly,xq,yq);
+% mesh(xq,yq,vq);
+mesh(xq,yq,ve);
 hold on
-% mesh(xq,yq,ve);
-
-plot3(x(:,1),x(:,2),estimatePoly,'o');
-legend('True function','Estimation')
-xlabel('Dimension 1');ylabel('Dimension 2'),zlabel('y')
+plot3(x(:,1),x(:,2),y,'o');
 
 figure
-k = 4;
+k = 3;
 m = knnRegressor(x_noise,y_noise,k);
 predictions = evalModel(m,x);
 mseKNN = immse(y,predictions);
-ve = griddata(x(:,1),x(:,2),y,xq,yq);
+ve = griddata(x(:,1),x(:,2),predictions,xq,yq);
 mesh(xq,yq,ve);
 hold on
-plot3(x(:,1),x(:,2),predictions,'o');
+plot3(x(:,1),x(:,2),y,'o');
 
 %% Estimating ten dimensional functions

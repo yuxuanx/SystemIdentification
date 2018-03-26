@@ -297,3 +297,15 @@ hold on
 plot3(x(:,1),x(:,2),predictions,'o');
 
 %% Estimating ten dimensional functions
+N = 100;
+[x_noise,y_noise] = tenDimData(N,1);
+[x,y] = tenDimData(10*N,0);
+n = 3;
+m = ployfit(x_noise,y_noise,10,n);
+m_x = ployfit(x,y,10,n);
+estimateLinear = m_x.x*m.theta;
+mseLinear = immse(y,estimateLinear);
+k = ceil(sqrt(N));
+m = knnRegressor(x_noise,y_noise,k);
+predictions = evalModel(m,x);
+mseKNN = immse(y,predictions);

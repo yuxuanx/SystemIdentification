@@ -45,7 +45,7 @@ xlabel('Sample size'); ylabel('Mean square error')
 legend('constant + linear term','5th order polynomial')
 
 %% Monte Carlo simulation
-numTrial = 1000;
+numTrial = 10000;
 N = 1000;
 var = 1;
 % assume theta is a vector with length 1; this corresponds to case 1 with
@@ -57,7 +57,7 @@ for i = 1:numTrial
     [x,y] =linearData(N,var);
     m = ployfit(x,y,0,1);
     parameterEstimates(:,i) = m.theta;
-    averagevariance(:,:,i) = m.variance;
+    averagevariance(:,:,i) = inv(m.x'*m.x);
 end
 averagevariance = mean(averagevariance,3);
 
@@ -265,10 +265,10 @@ plot(2:10,msePoly)
 % changes, the test, validation data remains the same
 
 % try both twoDimData1&2
-N = 10;
+N = 100;
 [x_noise,y_noise] = twoDimData2(N,1);
 [x,y] = twoDimData2(10*N,0);
-n = 2;
+n = 5;
 m_x = ployfit(x,y,0,n); % try 2 to 5
 m = ployfit(x_noise,y_noise,0,n);
 estimatePoly = m_x.x*m.theta;
@@ -297,7 +297,7 @@ hold on
 plot3(x(:,1),x(:,2),predictions,'o');
 
 %% Estimating ten dimensional functions
-N = 100;
+N = 500;
 [x_noise,y_noise] = tenDimData(N,1);
 [x,y] = tenDimData(10*N,0);
 n = 3;

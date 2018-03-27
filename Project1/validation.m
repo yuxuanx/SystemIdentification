@@ -1,14 +1,15 @@
 clear;clc
 %% Validate problem 1.a
-numSamples = 30;
+numSamples = 10;
 numVariables = 3;
 dimension = 1;
 x = 10*rand(numSamples,numVariables);
-theta = rand(numVariables,dimension);
+% theta = rand(numVariables,dimension);
+theta = [-3;4;2];
 
 % add some noise
 stdNoise = 1;
-noise = stdNoise*rand(numSamples,dimension);
+noise = stdNoise*randn(numSamples,dimension);
 y = x*theta + noise; 
 
 % Validation estimate and its standard deviation
@@ -48,7 +49,7 @@ theta = rand(size(x2,2),dimension);
 
 % add some noise
 stdNoise = 0.1;
-noise = stdNoise*rand(numSamples,dimension);
+noise = stdNoise*randn(numSamples,dimension);
 y = x2*theta + noise;
 
 m = ployfit(x,y,lambda,n);

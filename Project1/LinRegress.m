@@ -12,15 +12,20 @@ if numSamples == size(y,1)
     % This is a linear regression model
     m.model = 'LR';
     % Least mean squares estimate
-    xSquare = x'*x;
-    m.theta = xSquare\x'*y;
+    inv_xSquare = inv(x'*x);
+    m.theta = x\y;
+%     m.theta = xSquare\x'*y;
     % Check if y has more than one output
     if size(y,2) > 1
         m.variance = 'None';
     else
         estimateError = (y-x*m.theta);
+        
+%         temp = estimateError'*(eye(numSamples) - x*inv_xSquare*x')*estimateError;
+%         m.variance = inv_xSquare*temp/(numSamples-size(x,2));
+        
         estimateSquareErrorSum = estimateError'*estimateError;
-        m.variance = inv(xSquare)/(numSamples-size(x,2))*estimateSquareErrorSum;
+        m.variance = inv_xSquare/(numSamples-size(x,2))*estimateSquareErrorSum;
     end
     m.x = x;
     m.y = y;

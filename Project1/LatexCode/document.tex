@@ -13,7 +13,7 @@
 %opening
 \title{SSY 230, System Identification\\
 	Project 1: Estimating functions from noisy data}
-\author{Yuxuan Xia\\ \href{mailto:yuxuan.xia@chalmers.se}{yuxuan.xia@chalmers.se}}
+\author{Yuxuan Xia\\ \href{mailto:yuxuan.xia@chalmers.se}{yuxuan.xia@chalmers.se}\\Emil Staf\\\href{mailto:emil.staf@chalmers.se}{emil.staf@chalmers.se}}
 
 \begin{document}
 
@@ -22,6 +22,8 @@
 \section{Linear regression functions}
 
 \subsection{Estimation parameter validation}
+
+
 
 \subsection{Regularization verification}
 
@@ -48,7 +50,7 @@ and that, when $\lambda\rightarrow +\infty$, $\hat{\theta}\rightarrow \mathbf{0}
 
 \subsection{One dimensional model plotting}
 \begin{figure}[H]
-	\caption{Estimated function using linear regression.}
+	\caption{Estimated function using linear regression (LR). Uncertainty is illustrated as shaded area with confidence level 0.95. Each sample of regressor vector $\mathbf{x}$ is randomly drawn from uniform distribution $[0,10]$. The true function is $\mathbf{y}=2\mathbf{x}$, the noise variance is set to 2, and the number of samples is 20. Estimation: $\mathbf{y} = -0.71+2.24\mathbf{x}$; Estimation upper bound: $\mathbf{y} = 0.81+2.12\mathbf{x}$; Estimation lower bound: $\mathbf{y} = -2.25+2.36\mathbf{x}$.}
 	\centering
 	\includegraphics[width=0.8\textwidth]{project1e.eps}
 \end{figure}
@@ -57,7 +59,7 @@ and that, when $\lambda\rightarrow +\infty$, $\hat{\theta}\rightarrow \mathbf{0}
 
 \subsection{KNN v.s. Linear regression}
 \begin{figure}[H]
-	\caption{Estimated functions using linear regression and KNN (K=3).}
+	\caption{Estimated functions using linear regression (LR) and KNN regressor (K=7). Each sample of regressor vector $\mathbf{x}$ is randomly drawn from uniform distribution $[0,10]$. The true function is $\mathbf{y}=2\mathbf{x}$, the noise variance is set to 1, and the number of samples is 50.}
 	\centering
 	\includegraphics[width=0.8\textwidth]{project2b}
 \end{figure}
@@ -115,7 +117,7 @@ The linear regression model with only constant and linear terms has better model
 	\includegraphics[width=0.8\textwidth]{project3d2}
 \end{figure}
 
-It can be seen from the results that the model quality of KNN model depends on both the data size and the noise variance. The results also suggest that a heuristically optimal number $K$ of nearest neighbors can be found based on the variance-bias trade-off. A general rule is that the larger the noise variance and the larger the data size, the more the number of neighbors we should choose.
+It can be seen from the results that the model quality of KNN model depends on both the data size and the noise variance. The results also suggest that the larger the noise variance and the larger the data size, the more the number of neighbors we should choose. A heuristically optimal number $K$ of nearest neighbors can be found based on the variance-bias trade-off. 
 
 \subsection{Polynomial  data}
 
@@ -146,13 +148,13 @@ As can be seen from Figure. \ref{fig:5thorderpolynomial}, the best result (using
 
 \subsubsection{Regress unsymmetrical data using linear regression}
 \begin{figure}[H]
-	\caption{Regressing unsymmetrical data on a linear regressor (constant + linear term).}
+	\caption{Regressing unsymmetrical data.}
 	\label{fig:unsymmetrical}
 	\centering
 	\includegraphics[width=0.8\textwidth]{project32c}
 \end{figure}
 
-As can be seen from Figure. \ref{fig:unsymmetrical}, the estimation does not fit the last part of the data due to non-linearity. In order to solve this problem, we can either increase the polynomial degree of the linear regression model we use or use a KNN model instead.
+As can be seen from Figure. \ref{fig:unsymmetrical}, the estimation does not fit the data, especially the last part. In order to solve this problem, we can either increase the polynomial degree of the linear regression model we use or use a KNN model instead.
 
 \subsubsection{Regress unsymmetrical data using KNN}
 \begin{figure}[H]
@@ -169,7 +171,7 @@ As can be seen from Figure. \ref{fig:unsymmetrical}, the estimation does not fit
 	\includegraphics[width=0.8\textwidth]{project32d2}
 \end{figure}
 
-Figure. \ref{fig:unsymmetricalKNN1} shows how the model quality of KNN model varies with the number of neighbors and the number of data with fixed noise variance, and Figure. \ref{fig:unsymmetricalKNN2} shows how the model quality of KNN model varies with the number of neighbors and the number of data with fixed data size. A heuristically optimal number $K$ of nearest neighbors can be found based on the variance-bias trade-off.
+Figure. \ref{fig:unsymmetricalKNN1} shows how the model quality of KNN model varies with the number of neighbors and the number of data with fixed noise variance, and Figure. \ref{fig:unsymmetricalKNN2} shows how the model quality of KNN model varies with the number of neighbors and the number of data with fixed data size. A general rule is that the larger the noise variance and the larger the data size, the more the number of neighbors we should choose. A heuristically optimal number $K$ of nearest neighbors can be found based on the variance-bias trade-off. 
 
 \subsection{Chirp data}
 

@@ -16,6 +16,10 @@ switch(model.model)
             predictions(i,:) = mean(model.y(sortpos(1:model.n),:));
         end
     otherwise
+        if isfield(model,'n')
+            m = ployfit(regressors,[],model.lambda,model.n);
+            regressors = m.x;
+        end
         predictions = regressors*model.theta;
 end
 

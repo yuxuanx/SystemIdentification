@@ -26,6 +26,5 @@ for p = 1:n
 end
 m = LinRegressRegul(x2,y,lambda);
 m.n = n;
-m.model = 'PRR';
 
 end

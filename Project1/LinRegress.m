@@ -6,6 +6,11 @@ function m = LinRegress(x,y)
 %         m.theta, parameters
 %         m.variance, parameter uncertainties
 
+if isempty(y)
+    m.x = x;
+    return;
+end
+
 % Check if x and y have the same number of rows
 numSamples = size(x,1);
 if numSamples == size(y,1)
@@ -14,16 +19,12 @@ if numSamples == size(y,1)
     % Least mean squares estimate
     inv_xSquare = inv(x'*x);
     m.theta = x\y;
-%     m.theta = xSquare\x'*y;
+%     m.theta = (x'*x)\x'*y;
     % Check if y has more than one output
     if size(y,2) > 1
         m.variance = 'None';
     else
         estimateError = (y-x*m.theta);
-        
-%         temp = estimateError'*(eye(numSamples) - x*inv_xSquare*x')*estimateError;
-%         m.variance = inv_xSquare*temp/(numSamples-size(x,2));
-        
         estimateSquareErrorSum = estimateError'*estimateError;
         m.variance = inv_xSquare/(numSamples-size(x,2))*estimateSquareErrorSum;
     end

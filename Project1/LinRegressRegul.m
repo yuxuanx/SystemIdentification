@@ -13,8 +13,8 @@ y2 = [y;zeros(size(y))];
 
 % Do linear regression
 m = LinRegress(x2,y2);
-m.model = 'LRR';
 m.x = x;
+m.lambda = lambda;
 
 end
 

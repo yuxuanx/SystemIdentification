@@ -7,8 +7,7 @@ var = 1; % noise variance
 
 % linear regression
 m = ployfit(x_noise,y_noise,0,1);
-m_x = ployfit(x,y,0,1); % this is one is only used for extracting x2
-estimateLinear = m_x.x*m.theta;
+estimateLinear = evalModel(m,x);
 % here, mean square error is used assess model quality
 mseLinear = immse(y,estimateLinear);
 
@@ -17,8 +16,7 @@ mseLinear = immse(y,estimateLinear);
 
 % polynomial regression
 m = ployfit(x_noise,y_noise,0,5);
-m_x = ployfit(x,y,0,5);
-estimatePoly = m_x.x*m.theta;
+estimatePoly = evalModel(m,x);
 msePoly = immse(y,estimatePoly);
 
 % plot with the model quality versus number of data
@@ -30,13 +28,11 @@ for i = 1:length(N)
     [x_noise,y_noise] =linearData(N(i),var);
     
     m = ployfit(x_noise,y_noise,0,5);
-    m_x = ployfit(x,y,0,5);
-    estimatePoly = m_x.x*m.theta;
+    estimatePoly = evalModel(m,x);
     msePoly(i) = immse(y,estimatePoly);
     
     m = ployfit(x_noise,y_noise,0,1);
-    m_x = ployfit(x,y,0,1);
-    estimateLinear = m_x.x*m.theta;
+    estimateLinear = evalModel(m,x);
     mseLinear(i) = immse(y,estimateLinear);
 end
 figure; hold on
@@ -45,7 +41,7 @@ xlabel('Sample size'); ylabel('Mean square error')
 legend('constant + linear term','5th order polynomial')
 
 %% Monte Carlo simulation
-numTrial = 10000;
+numTrial = 1000;
 N = 1000;
 var = 1;
 % assume theta is a vector with length 1; this corresponds to case 1 with
@@ -125,9 +121,8 @@ n = 2:10; % polynomial degree
 lambda = 0; % regularization
 msePoly = zeros(length(n),1);
 for i = 1:length(n)
-    m = ployfit(x_noise,y_noise,0,n(i));
-    m_x = ployfit(x,y,0,n(i));
-    estimatePoly = m_x.x*m.theta;
+    m = ployfit(x_noise,y_noise,lambda,n(i));
+    estimatePoly = evalModel(m,x);
     msePoly(i) = immse(y,estimatePoly);
 end
 
@@ -146,9 +141,8 @@ lambda = [0.01,0.1,1,10,100];
 
 msePoly = zeros(length(lambda),1);
 for i = 1:length(lambda)
-    m_x = ployfit(x,y,lambda(i),n);
     m = ployfit(x_noise,y_noise,lambda(i),n);
-    estimatePoly = m_x.x*m.theta;
+    estimatePoly = evalModel(m,x);
     msePoly(i) = immse(y,estimatePoly);
 end
 figure
@@ -158,18 +152,13 @@ xlabel('Regularization term'); ylabel('Mean square error')
 %% unsymmetrical data
 N = 100; % sample size, try 10,100,1000,10000
 var = 1;
-[x,y] = polyData(N,0,1);
 [x_noise,y_noise] = polyData(N,var,1);
+[x,y] = polyData(10*N,0,1);
 % linear regression
-m_x = ployfit(x,y,0,1);
-m = ployfit(x_noise,y_noise,0,1);
-estimateLinear = m_x.x*m.theta;
-mseLinear = immse(y,estimateLinear);
-
-figure; hold on
-plot(y,'Linewidth',2); plot(estimateLinear,'Linewidth',2);
-ylabel('Estimation')
-legend('Generated data (Truth)','LR estimation')
+m_LR = ployfit(x_noise,y_noise,0,1);
+m_Poly = ployfit(x_noise,y_noise,0,4);
+m_KNN = knnRegressor(x_noise,y_noise,3);
+plotModel(y,x,m_LR,m_Poly,m_KNN)
 
 % Finding: linear model can not give a good estimate to the second half of
 % the unsymmetric data due to the nonlinearity of the model
@@ -213,17 +202,16 @@ mesh(0.5:0.5:2,2:10,mseKNN_vark)
 ylabel('number of neighbors'); xlabel('noise variance'); zlabel('mse')
 
 %% generate chirp data
-N = 1000; % sample size, try 50,1000
+N = 100; % sample size, try 50,1000
 var = 0.2; % noise level, try 0.05, 0.2
 [x,y] = chirpData(10*N,0);
 [x_noise,y_noise] = chirpData(N,var);
 % polynomial regression (try different degrees)
-n = 2:10;
+n = 2:20;
 msePoly = zeros(length(n),1);
 for i = 1:length(n)
-    m_x = ployfit(x,y,10,n(i));
     m = ployfit(x_noise,y_noise,10,n(i));
-    estimatePoly = m_x.x*m.theta;
+    estimatePoly = evalModel(m,x);
     msePoly(i) = immse(y,estimatePoly);
 end
 
@@ -240,19 +228,16 @@ end
 % Do the same thing for KNN
 
 % subplot for var = 0.05, 0.2, N = 50, 1000, k = 2:10
-n = 2:10;
-N = 1000;
-var = 0.05;
+n = 2:20;
 mseKNN = zeros(length(n),1);
 for k = 1:length(n)
-%     [x_noise,y_noise] =polyData(N,var,1);
     m = knnRegressor(x_noise,y_noise,n(k));
     predictions = evalModel(m,x);
     mseKNN(k) = immse(y,predictions);
 end
 figure; hold on
-plot(2:10,mseKNN)
-plot(2:10,msePoly)
+plot(n,mseKNN)
+plot(n,msePoly)
 
 %% Estimating two dimensional functions
 % [xq,yq] = meshgrid(0:.2:10, 0:.2:10);
@@ -266,21 +251,18 @@ plot(2:10,msePoly)
 
 % try both twoDimData1&2
 N = 100;
-[x_noise,y_noise] = twoDimData2(N,1);
-[x,y] = twoDimData2(10*N,0);
+[x_noise,y_noise] = twoDimData1(N,1);
+[x,y] = twoDimData1(10*N,0);
 n = 5;
-m_x = ployfit(x,y,0,n); % try 2 to 5
 m = ployfit(x_noise,y_noise,0,n);
-estimatePoly = m_x.x*m.theta;
+estimatePoly = evalModel(m,x);
 msePoly = immse(y,estimatePoly);
 
 figure
 [xq,yq] = meshgrid(0:.2:10, 0:.2:10);
 vq = griddata(x(:,1),x(:,2),y,xq,yq);
-% ve = griddata(x(:,1),x(:,2),estimatePoly,xq,yq);
 mesh(xq,yq,vq);
 hold on
-% mesh(xq,yq,ve);
 
 plot3(x(:,1),x(:,2),estimatePoly,'o');
 legend('True function','Estimation')
@@ -302,8 +284,7 @@ N = 500;
 [x,y] = tenDimData(10*N,0);
 n = 3;
 m = ployfit(x_noise,y_noise,10,n);
-m_x = ployfit(x,y,10,n);
-estimateLinear = m_x.x*m.theta;
+estimateLinear = evalModel(m,x);
 mseLinear = immse(y,estimateLinear);
 k = ceil(sqrt(N));
 m = knnRegressor(x_noise,y_noise,k);

@@ -157,7 +157,7 @@ var = 1;
 % linear regression
 m_LR = ployfit(x_noise,y_noise,0,1);
 m_Poly = ployfit(x_noise,y_noise,0,4);
-m_KNN = knnRegressor(x_noise,y_noise,3);
+m_KNN = knnRegressor(x_noise,y_noise,10);
 plotModel(y,x,m_LR,m_Poly,m_KNN)
 
 % Finding: linear model can not give a good estimate to the second half of
@@ -251,9 +251,9 @@ plot(n,msePoly)
 
 % try both twoDimData1&2
 N = 100;
-[x_noise,y_noise] = twoDimData1(N,1);
-[x,y] = twoDimData1(10*N,0);
-n = 5;
+[x_noise,y_noise] = twoDimData2(N,1);
+[x,y] = twoDimData2(10*N,0);
+n = 1;
 m = ployfit(x_noise,y_noise,0,n);
 estimatePoly = evalModel(m,x);
 msePoly = immse(y,estimatePoly);
@@ -277,6 +277,8 @@ ve = griddata(x(:,1),x(:,2),y,xq,yq);
 mesh(xq,yq,ve);
 hold on
 plot3(x(:,1),x(:,2),predictions,'o');
+legend('True function','Estimation')
+xlabel('Dimension 1');ylabel('Dimension 2'),zlabel('y')
 
 %% Estimating ten dimensional functions
 N = 500;

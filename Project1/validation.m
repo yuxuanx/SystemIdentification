@@ -2,21 +2,19 @@
 clear;clc
 dbstop if error
 
-numSamples = 20;
+numSamples = 50;
 numVariables = 1;
 dimension = 1;
 x = 10*rand(numSamples,numVariables);
-% theta = rand(numVariables,dimension);
-theta = 2*ones(numVariables,dimension);
 
 % add some noise
 stdNoise = 1;
 noise = stdNoise*randn(numSamples,dimension);
-y = x*theta + noise;
+y = 2+2*x + noise;
 
 % Validation estimate and its standard deviation
-m_LR = LinRegress(x,y);
-% m_LR = ployfit(x,y,0,3);
+% m_LR = LinRegress(x,y);
+m_LR = ployfit(x,y,0,1);
 thetaEstimate = m_LR.theta;
 
 if dimension == 1
@@ -27,7 +25,7 @@ end
 % plot a linear regression model with uncertainty region
 plotModel(y,x,m_LR);
 % plot a linear regression and a KNN model
-k = ceil(sqrt(numSamples));
+k = round(sqrt(numSamples));
 m_KNN = knnRegressor(x,y,k);
 plotModel(y,x,m_LR,m_KNN);
 

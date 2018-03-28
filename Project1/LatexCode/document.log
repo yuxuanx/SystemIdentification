@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.18)  28 MAR 2018 17:17
+This is pdfTeX, Version 3.14159265-2.6-1.40.18 (TeX Live 2017) (preloaded format=pdflatex 2018.3.18)  28 MAR 2018 21:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -372,11 +372,11 @@ LaTeX Info: Redefining \nameref on input line 18.
 \everyMPtoPDFconversion=\toks24
 )
 Package epstopdf Info: Source file: <project1e.eps>
-(epstopdf)                    date: 2018-03-28 15:36:43
-(epstopdf)                    size: 62624 bytes
+(epstopdf)                    date: 2018-03-28 21:29:13
+(epstopdf)                    size: 66267 bytes
 (epstopdf)             Output file: <./project1e-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-28 15:39:59
-(epstopdf)                    size: 62444 bytes
+(epstopdf)                    date: 2018-03-28 21:29:33
+(epstopdf)                    size: 65501 bytes
 (epstopdf)             Command: <repstopdf --outfile=./project1e-eps-converted-
 to.pdf project1e.eps>
 (epstopdf)             \includegraphics on input line 55.
@@ -410,11 +410,11 @@ l.57
 l.57 
      ]
 Package epstopdf Info: Source file: <project2b.eps>
-(epstopdf)                    date: 2018-03-28 15:33:52
-(epstopdf)                    size: 24572 bytes
+(epstopdf)                    date: 2018-03-28 21:30:44
+(epstopdf)                    size: 24810 bytes
 (epstopdf)             Output file: <./project2b-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-28 15:34:14
-(epstopdf)                    size: 10384 bytes
+(epstopdf)                    date: 2018-03-28 21:30:58
+(epstopdf)                    size: 10391 bytes
 (epstopdf)             Command: <repstopdf --outfile=./project2b-eps-converted-
 to.pdf project2b.eps>
 (epstopdf)             \includegraphics on input line 64.
@@ -433,11 +433,11 @@ Package pdftex.def Info: ./project2b-eps-converted-to.pdf  used on input line 6
 l.66 
       <./project1e-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <project3c.eps>
-(epstopdf)                    date: 2018-03-25 14:41:54
-(epstopdf)                    size: 22049 bytes
+(epstopdf)                    date: 2018-03-28 21:17:15
+(epstopdf)                    size: 22321 bytes
 (epstopdf)             Output file: <./project3c-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-25 14:46:05
-(epstopdf)                    size: 9184 bytes
+(epstopdf)                    date: 2018-03-28 21:20:19
+(epstopdf)                    size: 9371 bytes
 (epstopdf)             Command: <repstopdf --outfile=./project3c-eps-converted-
 to.pdf project3c.eps>
 (epstopdf)             \includegraphics on input line 92.
@@ -577,11 +577,11 @@ Package pdftex.def Info: ./project32b2-eps-converted-to.pdf  used on input line
 l.146 
        <./project32b-eps-converted-to.pdf>]
 Package epstopdf Info: Source file: <project32c.eps>
-(epstopdf)                    date: 2018-03-28 17:17:25
-(epstopdf)                    size: 37903 bytes
+(epstopdf)                    date: 2018-03-28 21:20:06
+(epstopdf)                    size: 241192 bytes
 (epstopdf)             Output file: <./project32c-eps-converted-to.pdf>
-(epstopdf)                    date: 2018-03-28 17:17:39
-(epstopdf)                    size: 15364 bytes
+(epstopdf)                    date: 2018-03-28 21:20:20
+(epstopdf)                    size: 86351 bytes
 (epstopdf)             Command: <repstopdf --outfile=./project32c-eps-converted
 -to.pdf project32c.eps>
 (epstopdf)             \includegraphics on input line 154.
@@ -704,14 +704,15 @@ Package amsmath Warning: Foreign command \atopwithdelims;
 (amsmath)                \frac or \genfrac should be used instead
 (amsmath)                 on input line 237.
 
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 253.
 [11pdfTeX warning (ext4): destination with the same identifier (name{table.2}) 
 has been already used, duplicate ignored
 
 \AtBegShi@Output ...ipout \box \AtBeginShipoutBox 
                                                   \fi \fi 
-l.253 \end{document}
-                    ] [12]
+l.247 
+      ]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 253.
+ [12]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 253.
  (./document.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 253.
@@ -723,11 +724,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 253.
 Here is how much of TeX's memory you used:
  6356 strings out of 492982
  94058 string characters out of 6132527
- 184953 words of memory out of 5000000
+ 185000 words of memory out of 5000000
  9786 multiletter control sequences out of 15000+600000
  9642 words of font info for 35 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 29i,9n,31p,945b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 29i,9n,31p,978b,359s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb
 ></usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb>
 </usr/local/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb><
@@ -739,7 +740,7 @@ cal/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/loca
 l/texlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/t
 exlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/te
 xlive/2017/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb>
-Output written on document.pdf (12 pages, 653900 bytes).
+Output written on document.pdf (12 pages, 727906 bytes).
 PDF statistics:
  351 PDF objects out of 1000 (max. 8388607)
  291 compressed objects within 3 object streams

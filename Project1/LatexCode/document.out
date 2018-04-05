@@ -2,7 +2,7 @@
 \BOOKMARK [2][-]{subsection.1.1}{Estimation parameter validation}{section.1}% 2
 \BOOKMARK [2][-]{subsection.1.2}{Regularization verification}{section.1}% 3
 \BOOKMARK [2][-]{subsection.1.3}{Polynomial fitting validation}{section.1}% 4
-\BOOKMARK [2][-]{subsection.1.4}{One dimensional model plotting}{section.1}% 5
+\BOOKMARK [2][-]{subsection.1.4}{\(e\) One dimensional model plotting}{section.1}% 5
 \BOOKMARK [1][-]{section.2}{KNN-regression functions}{}% 6
 \BOOKMARK [2][-]{subsection.2.1}{KNN v.s. Linear regression}{section.2}% 7
 \BOOKMARK [1][-]{section.3}{Estimating one dimensional functions}{}% 8

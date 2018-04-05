@@ -12,27 +12,31 @@ if isempty(y)
 end
 
 % Check if x and y have the same number of rows
-numSamples = size(x,1);
-if numSamples == size(y,1)
+
+[numSamplesX, numDimsX] = size(x);
+[numSamplesY, numDimsY] = size(y);
+if numSamplesX == numSamplesY
     % This is a linear regression model
     m.model = 'LR';
+    m.label = m.model;
     % Least mean squares estimate
-    inv_xSquare = inv(x'*x);
     m.theta = x\y;
 %     m.theta = (x'*x)\x'*y;
     % Check if y has more than one output
-    if size(y,2) > 1
+    if numDimsY > 1
         m.variance = 'None';
     else
-        estimateError = (y-x*m.theta);
+        estimateError = (y-x*m.theta);  % Should use the evalModel function
+        %estimateError = (y-evalModel(m, x));
+        inv_xSquare = inv(x'*x);
         estimateSquareErrorSum = estimateError'*estimateError;
-        m.variance = inv_xSquare/(numSamples-size(x,2))*estimateSquareErrorSum;
+        m.variance = inv_xSquare/(numSamplesX-numDimsX)*estimateSquareErrorSum;
     end
     m.x = x;
     m.y = y;
-elseif numSamples ~= size(y,1)
+elseif numSamplesX ~= numSamplesY
     error('Matrix x and y should have the same number of rows!')
-elseif numSamples < size(x,2)
+elseif numSamplesX < numDimsX
     error('Number of samples should be no smaller than the number of parameters')
 end
 

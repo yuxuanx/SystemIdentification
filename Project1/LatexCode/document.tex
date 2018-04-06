@@ -138,21 +138,21 @@ Y-X\theta\\
 &= \frac{1}{2}[(Y-X\theta)^\mathsf{T}(Y-X\theta) + (\Lambda\theta)^\mathsf{T}(\Lambda\theta)] = \frac{1}{2}[(Y-X\theta)^\mathsf{T} (Y-X\theta) + \lambda\theta^\mathsf{T}\theta].
 \end{align}
 
-Given a regressor matrix $\mathbf{x}$ and an output matrix $\mathbf{y}$, the linear least squares estimate with L2-Regularization can be obtained by minimizing the sum of squared residuals,
+Given a regressor matrix $X$ and an output matrix $Y$, the linear least squares estimate with L2-Regularization can be obtained by minimizing the sum of squared residuals,
 \begin{equation}{\label{LSestimator}}
-\hat{\theta} = \arg\min\limits_{\theta}(\mathbf{y}-\mathbf{x}\theta)^T(\mathbf{y}-\mathbf{x}\theta)+\lambda\theta^T\theta.
+\hat{\theta} = \arg\min\limits_{\theta}(Y-X\theta)^T(Y-X\theta)+\lambda\theta^T\theta.
 \end{equation}
 The estimate $\hat{\theta}$ can be found by setting the derivative of (\ref{LSestimator}) w.r.t. $\theta$ to zero,
 \begin{subequations}\label{LSderivative}
 		\begin{align}
-		\frac{d}{d\theta}\left((\mathbf{y}-\mathbf{x}\theta)^T(\mathbf{y}-\mathbf{x}\theta)+\lambda\theta^T\theta \right) &= 0,\\
-		-\mathbf{x}^T\mathbf{y}+\mathbf{x}^T\mathbf{x}\theta+\lambda\theta &=0,\\
-		(\mathbf{x}^T\mathbf{x}+\lambda\mathbf{I})^{-1}\mathbf{x}^T\mathbf{y} &=\hat{\theta}.
+		\frac{d}{d\theta}\left((Y-X\theta)^T(Y-X\theta)+\lambda\theta^T\theta \right) &= 0,\\
+		-X^TY+X^TX\theta+\lambda\theta &=0,\\
+		(X^TX+\lambda I)^{-1}X^TY &=\hat{\theta}.
 		\end{align}
 \end{subequations}
 It is easy to verify that, when $\lambda=0$, $\hat{\theta}$ is equal to the linear least squares estimate without regularization, i.e.,
 \begin{equation}
-\hat{\theta} = (\mathbf{x}^T\mathbf{x})^{-1}\mathbf{x}^T\mathbf{y},
+\hat{\theta} = (X^TX)^{-1}X^TY,
 \end{equation}
 and that, when $\lambda\rightarrow +\infty$, $\hat{\theta}\rightarrow \mathbf{0}$.
 
@@ -166,13 +166,13 @@ and that, when $\lambda\rightarrow +\infty$, $\hat{\theta}\rightarrow \mathbf{0}
 	\label{fig:poly1d}
 \end{figure}
 
-The estimated 3rd degree polynomial in Figure \ref{fig:poly1d} is given by $\hat{\mathbf{y}} = 0.4 + 5.56\mathbf{x} + 0.41\mathbf{x} - 0.096\mathbf{x}$, close to the true function $\mathbf{y}=1+5\mathbf{x} + 0.5\mathbf{x}^2 - 0.1\mathbf{x}^3$.
+The estimated 3rd degree polynomial in Figure \ref{fig:poly1d} is given by $\hat{y} = 0.4 + 5.56x + 0.41x - 0.096x$, close to the true function $y=1+5x + 0.5x^2 - 0.1x^3$.
 
 \subsection{(e) One dimensional model plotting}
 \begin{figure}[H]
 	\centering
 	\includegraphics[trim= 10cm 5cm 10cm 5cm, scale=0.4]{proj1-1e}
-	\caption{Estimated function using linear regression (LR). Uncertainty is illustrated as the region between the two dotted lines with confidence level 0.95. Each sample of regressor vector $\mathbf{x}$ is randomly drawn from uniform distribution $[0,10]$. The true function is $\mathbf{y}=2+2\mathbf{x}$, the noise variance is set to 2, and the number of samples is 20. }
+	\caption{Estimated function using linear regression (LR). Uncertainty is illustrated as the region between the two dotted lines with confidence level 0.95. Each sample of regressor vector $x$ is randomly drawn from uniform distribution $[0,10]$. The true function is $y=2+2x$, the noise variance is set to 2, and the number of samples is 20. }
 	\label{fig:confidence}
 \end{figure}
 
@@ -268,9 +268,9 @@ When we regress non-linear data on linear regressors, the model does not converg
 \end{figure}
 Recall the expression for parameter estimation variance,
 \begin{equation}
-\text{var}(\hat{\theta}) = (\mathbf{x}^T\mathbf{x})^{-1}\sigma^2,
+\text{var}(\hat{\theta}) = (X^TX)^{-1}\sigma^2,
 \end{equation}
-where $\sigma^2$ is the noise variance. It can be found that the parameter uncertainty depends on $(\mathbf{x}^T\mathbf{x})^{-1}$, which further depends on the dimension of $\mathbf{x}$, i.e., the data size. The larger the data size, the smaller $(\mathbf{x}^T\mathbf{x})^{-1}$ and the smaller the parameter uncertainty. 
+where $\sigma^2$ is the noise variance. It can be found that the parameter uncertainty depends on $(X^TX)^{-1}$, which further depends on the dimension of $X$, i.e., the data size. The larger the data size, the smaller $(X^TX)^{-1}$ and the smaller the parameter uncertainty. 
 
 \subsubsection{Linear regression model (polynomial + regularization)}
 
@@ -305,18 +305,16 @@ When using a linear regressor with 10th order polynomial on a small data size, e
 	\caption{Polynomial regressors of degree 10 with varying regularization parameter.}
 	\label{fig:poly10}
 \end{figure}
-A larger regularization parameter forces the regressor to be less flexible which in the case of having few training data is necessary for acheiving an acceptable fit.
+Having a small number of data points N=15, in the range of the degree of polynomials n=10, the linear regression model is very likely to overfit the training data. By increasing the regularization parameter some of the variance is traded against a larger bias, which is favorable in this situation and seen in both Figure \ref{fig:mseVSregul} and Figure \ref{fig:poly10}. Increasing the regularization parameter forces the regressor to be less flexible, which in the case of having few training data is a great tool for acheiving an acceptable fit. There is an optimal regularization parameter value when the increase in bias error is larger than the decrease in variance error.
 
 \subsubsection{Regress unsymmetrical data using linear regression}
 The unsymmetrical data is generating data where 90 \% lies within the interval [0,5] and 10 \% within [5,10], in contrast to the symmetrical data previously used where the data is uniformly distributed over the whole range [0, 10]. This could be problematic, since using linear regression without regularization all data points are equally weighted. This will contribute to a better fit of the underlying function in [0,5], but a worse fit in [5,10]. To solve this problem we could e.g. add a regularization term or make sure that the training data is uniformly distributed withing the range of the regressors.
-
 \begin{figure}[ht]
 	\centering
 	\includegraphics[trim= 10cm 5cm 10cm 5cm, scale=0.4]{proj1-3_2c}
 	\caption{Regressing unsymmetrical data (100 training data and 100 validation data).}
 	\label{fig:unsymmetrical}
 \end{figure}
-
 As can be seen from Figure \ref{fig:unsymmetrical}, the linear regression does not fit the data, especially the last part. In order to solve this problem, we can either increase the polynomial degree of the linear regression model we use or use a KNN model instead.
 
 \subsubsection{Regress unsymmetrical data using KNN}
@@ -476,8 +474,6 @@ A linear regression model outperforms a polynomial model with degree 3 without r
 In Figure \ref{fig:proj1-4_2e-KNN} it can be seen that given 1000 data choosing the number of neighbors around $K=50$ gives the best result, and the linear regression with polynomial degree 3 and regularization parameter $\lambda=10$ outperforms the KNN. The best model however is the linear model using only polynomials to the degree 1 and regularization parameter 1. Increasing the data size will not change the comparison result. However, we found that, when the data size decreases to 500, KNN and linear regression start to have similar performance, and that, if we further decrease the data size, KNN will instead outperform linear regression.
 
 \textbf{Analysis}:  As a general rule, linear regression will tend to outperform KNN when there is a small number of observations per predictor. This rule especially holds for high-dimensional data since the KNN suffers from the curse of dimensionality. However, our observation obeys this general rule. In the regression, we use all the possible regressors up to degree 3 to fit the model. However, it is more often the case that the response is only related to a subset of the regressors. In order to fit a single model involving regressors that are associated with the response, variable selection should have been done. Using redundant regressors will increase the chance to fit unexpected pattern in the data that are randomly generated by noise; thus estimation performance might be deteriorated. This explains our observation that the KNN outperforms the linear regression model without variable selection  even when the data size is small. 
-
-
 
 
 

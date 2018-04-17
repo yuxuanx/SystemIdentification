@@ -31,7 +31,7 @@ xtemp1 = repmat(0:-1:1-na,N,1) + (0:N-1)';
 for i = 1:N
     for j = 1:na
         if xtemp1(i,j) > 0
-            X(i,j) = y(xtemp1(i,j));
+            X(i,j) = -y(xtemp1(i,j));
         end
     end
 end

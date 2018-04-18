@@ -13,7 +13,8 @@ hold on
 plot(trueOutput,'Linewidth',2);
 plot(prediction,'Linewidth',2);
 plot(simulation,'Linewidth',2);
-str = strcat('Predicted output, K = ', num2str(horizon));
+str = strcat('Predicted output, K=', num2str(horizon));
+xlabel('Time step'); ylabel('Output')
 legend('True output',str,'Simulated Output')
 
 

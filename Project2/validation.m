@@ -2,12 +2,12 @@ dbstop if error
 
 clear;clc
 
-N = 50;
+N = 100;
 u = randi(2,[N,1])-1;
 e = randn(N,1);
 
-a = [1,1]; na = length(a);
-b = 1; nb = length(b); 
+a = [-1.5 0.7]; na = length(a);
+b = [1 0.5]; nb = length(b); 
 nk = 2;
 y = zeros(N,1);
 for i = 1:N
@@ -18,6 +18,7 @@ end
 
 m = arxfit([y;u],[na,nb,nk]);
 tfsys = id2tf(m)
+% ltiview('lsim',tfsys);
 
-horizon = 3;
+horizon = 2;
 idcompare([y;u],m,horizon)

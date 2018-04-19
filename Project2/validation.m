@@ -55,3 +55,42 @@ ltiview(tfsys) % only works for causal system
 
 horizon = 2;
 idcompare([y;u],m,horizon)
+
+%% System Identification
+% First system
+load('exercise1.mat')
+
+na = 1;
+nb = 1;
+nk = 0;
+mArx = arxfit([y;u],[na,nb,nk]);
+
+horizon = 2;
+idcompare([y;u],mArx,horizon)
+
+nf = 1;
+nb = 1;
+nk = 0;
+mOe = oefit([y;u],[nf,nb,nk]);
+
+horizon = 2;
+idcompare([y;u],mOe,horizon)
+
+% Second system
+load('exercise2.mat')
+
+na = 1;
+nb = 1;
+nk = 0;
+mArx = oefit([z1(:,1);z1(:,2)],[na,nb,nk],'optimal');
+
+horizon = 2;
+idcompare([z2(:,1);z2(:,2)],mArx,horizon)
+
+nf = 1;
+nb = 1;
+nk = 0;
+mOe = oefit([z1(:,1);z1(:,2)],[nf,nb,nk],'optimal');
+
+horizon = 2;
+idcompare([z2(:,1);z2(:,2)],mOe,horizon)

@@ -5,7 +5,7 @@ clear;clc
 
 N = 100;
 u = randi(2,[N,1])-1;
-e = 0.5*randn(N,1);
+e = 0.1*randn(N,1);
 
 a = [-1.5 0.7]; na = length(a);
 b = [1 0.5]; nb = length(b); 
@@ -17,8 +17,8 @@ for i = 1:N
     y(i) = -flip(a)*ytemp + flip(b)*utemp + e(i);
 end
 
-w = 0;
-% w = 0.1*randn(N,1); % add white noise to test robustness
+% w = 0;
+w = 0.1*randn(N,1); % add white noise to test robustness
 m = arxfit([y+w;u],[na,nb,nk]);
 tfsys = id2tf(m)
 ltiview(tfsys) % only works for causal system
@@ -31,7 +31,7 @@ clear;clc
 
 N = 1000;
 u = randi(2,[N,1])-1;
-e = 0.5*randn(N,1);
+e = 0.1*randn(N,1);
 
 f = [-1.5 0.7]; nf = length(f);
 b = [1 0.5]; nb = length(b); 
@@ -46,8 +46,8 @@ end
 
 % opt = 'approximate';
 opt = 'optimal';
-w = 0;
-% w = 0.1*randn(N,1); % add white noise to test robustness
+% w = 0; 
+w = 0.1*randn(N,1); % add white noise to test robustness
 m = oefit([y+w;u],[nf,nb,nk],opt);
 
 tfsys = id2tf(m)
@@ -85,8 +85,8 @@ nk = 0;
 mOe = oefit([y;u],[nf,nb,nk],'approximate');
 
 tfsys = id2tf(mOe)
-% plottype = 'impulse'; % impulse response
-plottype = 'pzmap'; % pole/zero map
+plottype = 'impulse'; % impulse response
+% plottype = 'pzmap'; % pole/zero map
 ltiview(plottype,tfsys) % only works for causal system
 
 horizon = 1;

@@ -1,4 +1,4 @@
-function [prediction, simulation, groundTruth] = idcompare(z,model,horizon)
+function varargout = idcompare(z,model,horizon)
 %Plot function, compare the simulated/predicted output together with the
 % true output with uncertainty region
 
@@ -7,6 +7,10 @@ groundTruth = z(1:length(z)/2);
 
 if strcmp(model.model,'ARX')
     prediction = idpredict(model,z,horizon);
+    varargout{1} = groundTruth;
+    varargout{2} = simulation;
+    varargout{3} = prediction;
+    
     figure
     hold on
     plot(groundTruth,'Linewidth',2);
@@ -16,12 +20,15 @@ if strcmp(model.model,'ARX')
     xlabel('Time step'); ylabel('Output')
     legend('True output',str,'Simulated Output')
 elseif strcmp(model.model,'OE')
+    varargout{1} = groundTruth;
+    varargout{2} = simulation;
+    
     figure
     hold on
     plot(groundTruth,'Linewidth',2);
     plot(simulation,'-.','Linewidth',2);
     xlabel('Time step'); ylabel('Output')
-    legend('True output','Simulated Output')
+    legend('True output','Simulated/Predicted Output')
 end
 
 

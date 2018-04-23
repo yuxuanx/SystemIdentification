@@ -3,13 +3,19 @@ function simulation = idsimulate(model,z)
 
 % extract parameters
 na = model.n(1);
+nb = model.n(2);
 nk = model.n(3);
 theta = model.theta;
+N = length(z)/2;
+u = z(N+1:end);
 
-A = [1;theta(1:na)]';
-B = [zeros(nk,1);theta(na+1:end)]';
-m = idpoly(A,B);
-simulation = lsim(m,z(length(z)/2+1:end));
+simulation = zeros(N,1);
+
+for i = 1:N
+    ytemp = zeros(na,1); idx = i-na:i-1; ytemp(idx>0) = simulation(idx(idx>0));
+    utemp = zeros(nb,1); idx = i-nb-nk+1:i-nk; utemp(idx>0) = u(idx(idx>0));
+    simulation(i) = -flip(theta(1:na))'*ytemp + flip(theta(na+1:end))'*utemp;
+end
 
 end
 

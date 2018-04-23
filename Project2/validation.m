@@ -3,7 +3,7 @@ dbstop if error
 %% ARX model
 clear;clc
 
-N = 1000;
+N = 100;
 u = randi(2,[N,1])-1;
 e = 0.5*randn(N,1);
 
@@ -77,7 +77,7 @@ plottype = 'pzmap'; % pole/zero map
 ltiview(plottype,tfsys) % only works for causal system
 
 horizon = 1;
-[prediction, simulation, groundTruth] = idcompare([y;u],mArx,horizon);
+[groundTruth,simulation,prediction] = idcompare([y;u],mArx,horizon);
 
 immseArxPre = immse(prediction,groundTruth);
 immseArxSim = immse(simulation,groundTruth);
@@ -90,14 +90,13 @@ nn = selstruc(V,0);
 mOe = oefit([y;u],nn,'approximate');
 
 tfsys = id2tf(mOe)
-% plottype = 'impulse'; % impulse response
-plottype = 'pzmap'; % pole/zero map
+plottype = 'impulse'; % impulse response
+% plottype = 'pzmap'; % pole/zero map
 ltiview(plottype,tfsys) % only works for causal system
 
 horizon = 1;
-[prediction, simulation, groundTruth] = idcompare([y;u],mOe,horizon);
+[groundTruth,simulation] = idcompare([y;u],mOe,horizon);
 
-immseOePre = immse(prediction,groundTruth);
 immseOeSim = immse(simulation,groundTruth);
 
 %% Second system
@@ -115,11 +114,10 @@ plottype = 'impulse'; % impulse response
 ltiview(plottype,tfsys) % only works for causal system
 
 horizon = 2;
-[prediction, simulation, groundTruth] = idcompare([z2(:,1);z2(:,2)],mArx,horizon);
+[groundTruth,simulation,prediction] = idcompare([z2(:,1);z2(:,2)],mArx,horizon);
 
 immseArxPre = immse(prediction,groundTruth);
 immseArxSim = immse(simulation,groundTruth);
-
 
 % identify OE model order
 V = ivstruc(iddata(z1(:,1),z1(:,2)),iddata(z1(:,1),z1(:,2)),struc(1:10,1:10,1:10));
@@ -132,7 +130,6 @@ plottype = 'impulse'; % impulse response
 ltiview(plottype,tfsys) % only works for causal system
 
 horizon = 2;
-[prediction, simulation, groundTruth] = idcompare([z2(:,1);z2(:,2)],mOe,horizon);
+[groundTruth,simulation] = idcompare([z2(:,1);z2(:,2)],mOe,horizon);
 
-immseOePre = immse(prediction,groundTruth);
 immseOeSim = immse(simulation,groundTruth);

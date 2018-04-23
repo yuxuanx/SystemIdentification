@@ -2,6 +2,11 @@ function prediction = idpredict(model,z,horizon)
 
 %K-step predictor, k = horizon
 
+if strcmp(model.model,'OE')
+    prediction = idsimulate(model,z);
+    return;
+end
+
 % extract parameters
 na = model.n(1);
 nk = model.n(3);

@@ -3,7 +3,7 @@ dbstop if error
 %% ARX model
 clear;clc
 
-N = 100;
+N = 1000;
 u = randi(2,[N,1])-1;
 e = 0.5*randn(N,1);
 
@@ -63,10 +63,13 @@ idcompare([y;u],m,horizon);
 clear;clc
 load('exercise1.mat')
 
-na = 7;
-nb = 9;
-nk = 0;
-mArx = arxfit([y;u],[na,nb,nk]);
+dataSize = length(y);
+
+% identify ARX model order
+V = arxstruc(iddata(y(1:dataSize/2),u(1:dataSize/2)),...
+    iddata(y(dataSize/2+1:end),u(dataSize/2+1:end)),struc(1:10,1:10,1:10));
+nn = selstruc(V,0);
+mArx = arxfit([y;u],nn);
 
 tfsys = id2tf(mArx)
 % plottype = 'impulse'; % impulse response
@@ -79,10 +82,12 @@ horizon = 1;
 immseArxPre = immse(prediction,groundTruth);
 immseArxSim = immse(simulation,groundTruth);
 
-nf = 2;
-nb = 2;
-nk = 0;
-mOe = oefit([y;u],[nf,nb,nk],'approximate');
+
+% identify OE model order
+V = ivstruc(iddata(y(1:dataSize/2),u(1:dataSize/2)),...
+    iddata(y(dataSize/2+1:end),u(dataSize/2+1:end)),struc(1:10,1:10,1:10));
+nn = selstruc(V,0);
+mOe = oefit([y;u],nn,'approximate');
 
 tfsys = id2tf(mOe)
 % plottype = 'impulse'; % impulse response
@@ -99,10 +104,10 @@ immseOeSim = immse(simulation,groundTruth);
 clear;clc
 load('exercise2.mat')
 
-na = 5;
-nb = 7;
-nk = 0;
-mArx = arxfit([z1(:,1);z1(:,2)],[na,nb,nk]);
+% identify ARX model order
+V = arxstruc(iddata(z1(:,1),z1(:,2)),iddata(z1(:,1),z1(:,2)),struc(1:10,1:10,1:10));
+nn = selstruc(V,0);
+mArx = arxfit([z1(:,1);z1(:,2)],nn);
 
 tfsys = id2tf(mArx)
 plottype = 'impulse'; % impulse response
@@ -115,10 +120,11 @@ horizon = 2;
 immseArxPre = immse(prediction,groundTruth);
 immseArxSim = immse(simulation,groundTruth);
 
-nf = 1;
-nb = 3;
-nk = 0;
-mOe = oefit([z1(:,1);z1(:,2)],[nf,nb,nk],'optimal');
+
+% identify OE model order
+V = ivstruc(iddata(z1(:,1),z1(:,2)),iddata(z1(:,1),z1(:,2)),struc(1:10,1:10,1:10));
+nn = selstruc(V,0);
+mOe = oefit([z1(:,1);z1(:,2)],nn,'optimal');
 
 tfsys = id2tf(mOe)
 plottype = 'impulse'; % impulse response

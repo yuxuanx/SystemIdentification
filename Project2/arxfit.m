@@ -44,9 +44,10 @@ for i = 1:N
     end
 end
 
-m.theta = X\y;
-m.n = n;
+% m.theta = X\y;
+m = LinRegress(X,y);
 m.model = 'ARX';
+m.n = n;
 
 end
 

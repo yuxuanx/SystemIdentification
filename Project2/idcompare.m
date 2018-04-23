@@ -31,6 +31,25 @@ elseif strcmp(model.model,'OE')
     legend('True output','Simulated/Predicted Output')
 end
 
+theta = model.theta;
+na = model.n(1);
+nk = model.n(3);
+A = [1;theta(1:na)]';
+B = [zeros(nk,1);theta(na+1:end)]';
+sys = idpoly(A,B);
+sys = setcov(sys,model.variance);
+
+figure
+h = iopzplot(sys);
+showConfidence(h,2);
+
+figure
+h = bodeplot(sys);
+showConfidence(h,2);
+
+figure
+h = nyquistplot(sys);
+showConfidence(h,2);
 
 
 

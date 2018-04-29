@@ -39,17 +39,17 @@ B = [zeros(nk,1);theta(na+1:end)]';
 sys = idpoly(A,B);
 sys = setcov(sys,model.variance);
 
-figure
-h = iopzplot(sys);
-showConfidence(h,2);
-
-figure
-h = bodeplot(sys);
-showConfidence(h,2);
-
-figure
-h = nyquistplot(sys);
-showConfidence(h,2);
+% figure
+% h = iopzplot(sys);
+% showConfidence(h,2);
+% 
+% figure
+% h = bodeplot(sys);
+% showConfidence(h,2);
+% 
+% figure
+% h = nyquistplot(sys);
+% showConfidence(h,2);
 
 
 
